@@ -1,4 +1,19 @@
 <h1>
     welcome from your dashboard..
 </h1>
+
+{{#if aproved}}
+    <h2>Seu cadastro foi aprovado!</h2>
+{{else}}
+    <h2>Seu cadastro ainda está em analise, por favor aguarde...</h2>
+{{/if}}
+
 <a href="/">Voltar</a>
+
+<hr>
+
+<ul>
+{{#each itens}}
+    <li> <p>ID: {{this.id}}</p>  <p>ITEM: {{this.item}}</p></li>
+{{/each}}
+</ul>
