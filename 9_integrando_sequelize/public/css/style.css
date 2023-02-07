@@ -24,7 +24,38 @@ h1{
     margin-left: 1em;
 }
 
-form, .books-container{
+.form-user{
+    width: 450px;
+    margin: 0 auto;
+}
+
+.address-container, .address-list{
+    margin-top: 1em;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #CCC;
+}
+
+.address-list{
+    padding: 1em 0em;
+}
+
+.address-list .address-item {
+    margin-bottom: 0.4em;
+}
+
+.address-list h2{
+    margin-bottom: 0.6em;
+}
+
+.address-container h2{
+    margin-top: 1em;
+}
+
+.address-container form{
     width: 450px;
     margin: 0 auto;
 }
@@ -50,6 +81,9 @@ form, .books-container{
 }
 
 .actions{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     margin-top: 0.8em;
 }
 
@@ -75,5 +109,42 @@ form, .books-container{
     padding: 20px;
     flex: 1 1 29%;
     max-width: 29%;
-    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.user-container .user-container h1 ,.user-container p {
+    text-align: center;
+    margin: 0;
+    margin-bottom: 0.7em;
+}
+
+.actions a,
+.actions input
+{
+    border: 1px solid #BBB;
+    border-radius: 5px;
+    text-decoration: none;
+    background-color: #FFF;
+    padding: 5px;
+    font-size: 15px;
+    color: #000;
+    cursor: pointer;
+}
+
+.actions .details-btn{
+    border-color: #004085;
+    color: #004085;
+    margin-left: 1em;
+}
+
+.actions .delete-btn{
+    border-color: #721c24;
+    color: #721c24;
+}
+
+.actions .edit-btn{
+    border-color: rgb(59, 18, 71);
+    color:rgb(59, 18, 71);
 }

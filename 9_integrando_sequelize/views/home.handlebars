@@ -4,7 +4,15 @@
 
     {{#each users }}
         <div class="item">
-            <p>Nome: {{this.name}}</p>
+            <h2>{{this.name}}</h2>
+            <p>{{this.occupation}}</p>
+            <div class="actions">
+            <a href="/users/{{this.id}}" class="details-btn" >Ver detalhes</a>
+            <form action="/users/delete/{{this.id}}" method="post">
+                   <input type="submit" value="Excluir" class="delete-btn"> 
+            </form>
+            <a href="/user/update/{{this.id}}" class="edit-btn">Editar</a>
+            </div>
         </div>
     {{/each}}   
 
