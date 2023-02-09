@@ -10,6 +10,7 @@ const conn = require('./db/conn');
 
 //imports routs
 const thoughtsRouter = require('./routes/toughtRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 //imports controllers
 const ToughtControler = require('./controllers/ToughtController');
@@ -42,8 +43,8 @@ app.use(session({
     }),
     cookie:{
         secure: false,
-        maxAge: 360000,
-        expires: new Date(Date.now()+360000),
+        maxAge: 3600000,
+        expires: new Date(Date.now()+3600000),
         httpOnly: true
     }
 }))
@@ -54,7 +55,7 @@ app.use(flash());
 //set sesion to res
 app.use((req, res, next)=>{
 
-    if(req.session.userId){
+    if(req.session.userid){
         res.locals.session = req.session;
     }
 
@@ -67,7 +68,7 @@ app.use(express.static('public'));
 
 //routes
 app.use('/toughts', thoughtsRouter);
-
+app.use('/', authRoutes);
 app.get('/', ToughtControler.showToughts);
 
 //Iniciando conexão

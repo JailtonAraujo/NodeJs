@@ -10,7 +10,7 @@ const User = db.define('user',{
         type: DataTypes.STRING,
         require: true
     },
-    senha:{
+    password:{
         type: DataTypes.STRING,
         require: true
     }
