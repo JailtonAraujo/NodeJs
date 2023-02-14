@@ -11,6 +11,7 @@ const conn = require('./db/conn');
 
 //Routes import
 const UserRoutes = require('./routes/UserRoutes');
+const PetsRoutes = require('./routes/PetsRoutes');
 
 //Config json response
 app.use(express.json());
@@ -20,6 +21,7 @@ app.use(express.static('public'));
 
 //Routes - Endpoints
 app.use('/users',UserRoutes);
+app.use('/pets',PetsRoutes);
 
 app.listen(5000,()=>{
     console.log('App running in port 5000...');

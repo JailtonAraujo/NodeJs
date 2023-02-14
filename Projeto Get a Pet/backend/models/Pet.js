@@ -16,9 +16,12 @@ const Pet = new mongoose.model(
             type:Number,
             required:true
         },
+        color:{
+            type:String,
+            required:true
+        },
         images:{
             type:Array,
-            required:true
         },
         available:{
             type:Boolean

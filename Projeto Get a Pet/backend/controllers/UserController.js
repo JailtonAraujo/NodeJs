@@ -2,6 +2,8 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const createUserToken = require('../helpers/create-user-token');
 
+
+
 module.exports = class UserController {
 
     //Register a new User
@@ -15,8 +17,28 @@ module.exports = class UserController {
             confirmepassword,
         } = req.body;
 
-        // Virify if all date are valids
-        validationUser({ name, email, phone, password, confirmepassword }, res);
+
+        //Valid User
+        if (!name) {
+            res.status(422).json({ message: "Name is not optinal!" });
+            return;
+        }
+        if (!email) {
+            res.status(422).json({ message: "E-mail is not optinal!" });
+            return;
+        }
+        if (!phone) {
+            res.status(422).json({ message: "Phone is not optinal!" });
+            return;
+        }
+        if (!password) {
+            res.status(422).json({ message: "Password is not optinal!" });
+            return;
+        }
+        if (password !== confirmepassword) {
+            res.status(422).json({ message: "The passwords is not equals!" });
+            return;
+        }
 
         //Check if user already exists
         const userValid = await User.findOne({ email: email });
@@ -91,31 +113,108 @@ module.exports = class UserController {
 
     }
 
+    //Edite a User
+    static async updateUser(req, res){
+
+        const currentUser = req.user;
+
+        const {
+            name,
+            email,
+            phone,
+            password,
+            confirmepassword,
+        } = req.body;
+
+        
+        let image = "";
+
+        if(req.file){
+            image = req.file.filename;
+        }
+
+        //Valid User
+        if (!name) {
+            res.status(422).json({ message: "Name is not optinal!" });
+            return;
+        }
+        if (!email) {
+            res.status(422).json({ message: "E-mail is not optinal!" });
+            return;
+        }
+        if (!phone) {
+            res.status(422).json({ message: "Phone is not optinal!" });
+            return;
+        }
+        if (!password) {
+            res.status(422).json({ message: "Password is not optinal!" });
+            return;
+        }
+        if (password !== confirmepassword) {
+            res.status(422).json({ message: "The passwords is not equals!" });
+            return;
+        }
+
+        //Check if email already exits
+        const userToValid = await User.findOne({email:email});
+        if(userToValid){
+            res.status(422).json({message:'Email already exists.'});
+            return;
+        }
+
+        const salt = bcrypt.genSaltSync(12);
+        const passwordHash = bcrypt.hashSync(password, salt);
+
+        const user = {
+            name,
+            email,
+            phone,
+            password:passwordHash,
+            image:image
+    };
+
+       try {
+        
+        await User.findOneAndUpdate(
+            {_id:currentUser._id},
+            {$set:user},
+            {new:true}
+        )
+
+        res.status(200).json({message:"Atualizado com sucesso!"});
+
+       } catch (error) {
+            res.status(500).json({message:error});
+            return;
+       }
+
+    }
+
 
 }
 
 //Validate user dates
-const validationUser = ({ name, email, phone, password, confirmepassword }, res) => {
+// const validationUser = (user, res) => {
 
-    if (!name) {
-        res.status(422).json({ message: "Name is not optinal!" });
-        return;
-    }
-    if (!email) {
-        res.status(422).json({ message: "E-mail is not optinal!" });
-        return;
-    }
-    if (!phone) {
-        res.status(422).json({ message: "Phone is not optinal!" });
-        return;
-    }
-    if (!password) {
-        res.status(422).json({ message: "Password is not optinal!" });
-        return;
-    }
-    if (password !== confirmepassword) {
-        res.status(422).json({ message: "The passwords is not equals!" });
-        return;
-    }
+//     if (!user.name) {
+//         res.status(422).json({ message: "Name is not optinal!" });
+//         return;
+//     }
+//     if (!user.email) {
+//         res.status(422).json({ message: "E-mail is not optinal!" });
+//         return;
+//     }
+//     if (!user.phone) {
+//         res.status(422).json({ message: "Phone is not optinal!" });
+//         return;
+//     }
+//     if (!user.password) {
+//         res.status(422).json({ message: "Password is not optinal!" });
+//         return;
+//     }
+//     if (user.password !== user.confirmepassword) {
+//         res.status(422).json({ message: "The passwords is not equals!" });
+//         return;
+//     }
 
-}
+// }
