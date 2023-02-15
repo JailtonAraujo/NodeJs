@@ -232,6 +232,67 @@ module.exports = class PetsController {
 
         res.status(200).json({message:"Pet been update."})
 
+    }
+
+    static async schedulePet(req,res){
+
+        const id = req.params.id;
+
+        const user = req.user;
+
+        //verify id exists a pet
+        const pet = await Pet.findById(id);
+        if(!pet){
+            res.status(404).json({message:"Pet not found!"});
+            return;
+        }
+
+          //verify id pet belong user
+          if(user._id.equals(pet.user._id)){
+            res.status(404).json({message:"Impossible process action, try again later!"});
+            return;
+        }
+
+        if(pet.adopter){
+            res.status(404).json({message:"Impossible process action, try again later!"});
+            return;
+        }
+
+        pet.adopter ={
+            _id:user._id,
+            name:user.name,
+            image:user.image
+        }
+
+        await Pet.findByIdAndUpdate(id,pet);
+        res.status(201).json({message:"Visita agendadad com sucesso!"});
+    }
+
+
+    static async conclude(req, res){
+
+        const id = req.params.id;
+        const user = req.user;
+
+         //verify id exists a pet
+         const pet = await Pet.findById(id);
+         if(!pet){
+             res.status(404).json({message:"Pet not found!"});
+             return;
+         }
+
+         //verify id pet belong user
+         if(user._id.toString() !== pet.user._id.toString()){
+            res.status(404).json({message:"Impossible process action, try again later!"});
+            return;
+        }
+
+        pet.available = false;
+
+        await Pet.findByIdAndUpdate(id,pet);
+
+        res.status(200).json({message:"Pet been adopter"});
 
     }
+
 }
